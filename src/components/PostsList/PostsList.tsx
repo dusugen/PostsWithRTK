@@ -26,16 +26,17 @@ const PostsList: React.FC = () => {
           alignItems: "revent",
         }}
       >
-        {filtredPost.map((item) => {
-          return (
-            <PostsItem
-              key={item.id}
-              id={item.id}
-              title={item.title}
-              body={item.body}
-            />
-          );
-        })}
+        {filtredPost &&
+          filtredPost.map((item) => {
+            return (
+              <PostsItem
+                key={item.id}
+                id={item.id}
+                title={item.title}
+                body={item.body}
+              />
+            );
+          })}
       </Box>
     </Container>
   );

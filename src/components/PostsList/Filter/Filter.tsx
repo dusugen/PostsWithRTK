@@ -24,6 +24,7 @@ const Filter = () => {
         sx={{ width: "100%" }}
         variant="outlined"
         value={filtredValue}
+        label="Search"
         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
           onFilterChange(e.target.value)
         }

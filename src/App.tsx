@@ -1,6 +1,7 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import "./App.css";
 import PostsList from "./components/PostsList/PostsList";
+import PostPage from "./components/PostsList/components/PostsItem/components/PostPage/PostPage";
 
 function App() {
   const router = createBrowserRouter([
@@ -10,7 +11,7 @@ function App() {
     },
     {
       path: "/:id",
-      element: <div>asdadas</div>,
+      element: <PostPage />,
     },
   ]);
 
