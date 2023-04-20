@@ -1,13 +1,12 @@
 import { Avatar, Box, Typography } from "@mui/material";
 import React from "react";
+import { PostData } from "../../../../../../../../types/post";
 
 interface PostProps {
-  id: number;
-  title: string;
-  body: string;
+  post: PostData;
 }
 
-const Post: React.FC<PostProps> = ({ id, title, body }) => {
+const Post: React.FC<PostProps> = ({ post }) => {
   return (
     <Box
       display="flex"
@@ -21,14 +20,14 @@ const Post: React.FC<PostProps> = ({ id, title, body }) => {
         sx={{ bgcolor: "blue", width: "100px", height: "100px", mr: "20px" }}
         aria-label="id"
       >
-        {id}
+        {post.id}
       </Avatar>
       <Box>
         <Typography variant="h4" component="div" mb="15px">
-          {title}
+          {post.title}
         </Typography>
         <Typography variant="h5" component="span" color="text.secondary">
-          {body}
+          {post.body}
         </Typography>
       </Box>
     </Box>

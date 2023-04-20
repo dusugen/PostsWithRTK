@@ -5,19 +5,19 @@ import {
 } from "@reduxjs/toolkit";
 import axios, { isAxiosError } from "axios";
 import { StatusOfRequestEnum } from "../../types/enums/statusOfRequestEnum";
-import { Post } from "../../types/post";
+import { PostData } from "../../types/post";
 import { RootState } from "../store";
 
 interface PostSlice {
   filterValue: string;
   fetchPosts: {
-    post: Post[] | null;
+    post: PostData[] | null;
     status: StatusOfRequestEnum;
     error: string | null;
   };
   fetchPostById: {
     id: number | null;
-    post: Post | null;
+    post: PostData | null;
     status: StatusOfRequestEnum;
     error: string | null;
   };
@@ -39,12 +39,12 @@ const initialState: PostSlice = {
 };
 
 export const fetchPosts = createAsyncThunk<
-  Post[],
+  PostData[],
   void,
   { rejectValue: string; state: RootState }
 >("post/fetchPosts", async function (_, { rejectWithValue }) {
   try {
-    const { data } = await axios.get<Post[]>(
+    const { data } = await axios.get<PostData[]>(
       "https://jsonplaceholder.typicode.com/posts?_limit=20"
     );
     return data;
@@ -55,12 +55,12 @@ export const fetchPosts = createAsyncThunk<
 });
 
 export const fetchPostById = createAsyncThunk<
-  Post,
+  PostData,
   number,
   { rejectValue: string; state: RootState }
 >("post/fetchPostById", async function (id, { rejectWithValue }) {
   try {
-    const { data } = await axios.get<Post>(
+    const { data } = await axios.get<PostData>(
       `https://jsonplaceholder.typicode.com/posts/${id}`
     );
     return data;
@@ -124,7 +124,7 @@ export const selectFiltredValue = createSelector(
 
 export const selectPostById = createSelector(
   selfSelector,
-  (state) => state.fetchPostById.post
+  (state) => state.fetchPostById
 );
 
 export const { changeFilterValue } = postSlice.actions;

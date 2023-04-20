@@ -1,4 +1,4 @@
-export interface Post {
+export interface PostData {
     userId: number,
     id: number,
     title: string,
