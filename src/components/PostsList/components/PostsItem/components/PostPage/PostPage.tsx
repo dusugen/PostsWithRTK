@@ -11,7 +11,8 @@ import { useThunkDispatch } from "../../../../../../redux/store";
 import { StatusOfRequestEnum } from "../../../../../../types/enums/statusOfRequestEnum";
 import CommentsList from "./components/Comments/ComentsList";
 import Post from "./components/Post/Post";
-import Loader from "../../../../../../shared/loader/Loader";
+import Loader from "../../../../../shared/loader/Loader";
+import ErrorPage from "../../../../../shared/errorPage/ErrorPage";
 
 const PostPage = () => {
   const { id } = useParams();
@@ -40,7 +41,7 @@ const PostPage = () => {
         </Link>
       </Typography>
       {status === StatusOfRequestEnum.LOADING && <Loader />}
-      {status === StatusOfRequestEnum.ERROR && error}
+      {status === StatusOfRequestEnum.ERROR && <ErrorPage error={error} />}
       {status === StatusOfRequestEnum.SUCCESS && post && (
         <>
           <Post post={post} />

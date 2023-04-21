@@ -1,10 +1,12 @@
 import SendIcon from "@mui/icons-material/Send";
 import { LoadingButton } from "@mui/lab";
 import { Box, TextField, Typography } from "@mui/material";
+import { useLayoutEffect, useRef } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { addComment } from "../../../../../../../../../../redux/slices/commentSlice";
 import { useThunkDispatch } from "../../../../../../../../../../redux/store";
 import { StatusOfRequestEnum } from "../../../../../../../../../../types/enums/statusOfRequestEnum";
+import { useState } from "react";
 
 interface FormProps {
   id: number | undefined;
@@ -27,18 +29,40 @@ const CommentForm: React.FC<FormProps> = ({
 }) => {
   const dispatch = useThunkDispatch();
 
+  const emailRef = useRef<HTMLInputElement>(null);
+  const nameRef = useRef<HTMLInputElement>(null);
+  const textRef = useRef<HTMLInputElement>(null);
+
   const {
     register,
-    reset,
     formState: { errors },
     handleSubmit,
-  } = useForm<Form>({
-    mode: "onBlur",
-  });
+    trigger,
+  } = useForm<Form>();
 
   const onFormSubmit: SubmitHandler<Form> = (data) => {
     if (id) dispatch(addComment({ comment: data, postId: id }));
   };
+
+  useLayoutEffect(() => {
+    if (emailRef) {
+      const keyHandler = (e: KeyboardEvent) => {
+        if (
+          e.key === "Enter" &&
+          document.activeElement !== emailRef.current &&
+          document.activeElement !== nameRef.current &&
+          document.activeElement !== textRef.current
+        ) {
+          emailRef.current?.scrollIntoView();
+          emailRef.current?.focus();
+        }
+      };
+      document.addEventListener("keydown", keyHandler);
+      return () => {
+        document.removeEventListener("keydown", keyHandler);
+      };
+    }
+  }, []);
 
   return (
     <Box
@@ -55,6 +79,11 @@ const CommentForm: React.FC<FormProps> = ({
         Add your comment
       </Typography>
       <TextField
+        inputRef={emailRef}
+        onKeyDown={async (e) => {
+          if (e.key === "Enter" && (await trigger("email")))
+            nameRef?.current?.focus();
+        }}
         disabled={idDisabled}
         error={!!errors?.email}
         helperText={errors.email?.message}
@@ -70,6 +99,11 @@ const CommentForm: React.FC<FormProps> = ({
         })}
       />
       <TextField
+        inputRef={nameRef}
+        onKeyDown={async (e) => {
+          if (e.key === "Enter" && (await trigger("name")))
+            textRef?.current?.focus();
+        }}
         disabled={idDisabled}
         error={!!errors?.name}
         helperText={errors.name?.message}
@@ -84,6 +118,7 @@ const CommentForm: React.FC<FormProps> = ({
         })}
       />
       <TextField
+        inputRef={textRef}
         disabled={idDisabled}
         error={!!errors?.body}
         helperText={errors.body?.message}
@@ -102,13 +137,13 @@ const CommentForm: React.FC<FormProps> = ({
         })}
       />
       <LoadingButton
-        type="submit"
         size="large"
         loadingPosition="end"
         endIcon={<SendIcon />}
         variant="contained"
         loading={status === StatusOfRequestEnum.LOADING}
         sx={{ mr: "40px" }}
+        onClick={handleSubmit(onFormSubmit)}
       >
         <span>Send</span>
       </LoadingButton>

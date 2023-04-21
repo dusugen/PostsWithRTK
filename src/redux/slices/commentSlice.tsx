@@ -43,14 +43,13 @@ export const fetchComments = createAsyncThunk<
   "comment/fetchComment",
   async function (id, { rejectWithValue, signal }) {
     try {
-      const response = await axios.get(
+      const { data } = await axios.get(
         `https://jsonplaceholder.typicode.com/posts/${id}/comments`,
         {
           signal,
         }
       );
-      console.log(response);
-      return response.data;
+      return data;
     } catch (error) {
       if (isAxiosError(error)) return rejectWithValue(error.message);
       return rejectWithValue("Unknown erorr !");
