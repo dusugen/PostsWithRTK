@@ -35,6 +35,7 @@ const CommentForm: React.FC<FormProps> = ({
 
   const {
     register,
+    setFocus,
     formState: { errors },
     handleSubmit,
     trigger,
@@ -54,7 +55,7 @@ const CommentForm: React.FC<FormProps> = ({
           document.activeElement !== textRef.current
         ) {
           emailRef.current?.scrollIntoView();
-          emailRef.current?.focus();
+          setFocus("email");
         }
       };
       document.addEventListener("keydown", keyHandler);
@@ -63,6 +64,8 @@ const CommentForm: React.FC<FormProps> = ({
       };
     }
   }, []);
+
+  console.log(textRef.current?.value, "TEXT VALUEÍ");
 
   return (
     <Box
@@ -82,7 +85,7 @@ const CommentForm: React.FC<FormProps> = ({
         inputRef={emailRef}
         onKeyDown={async (e) => {
           if (e.key === "Enter" && (await trigger("email")))
-            nameRef?.current?.focus();
+            nameRef.current?.focus();
         }}
         disabled={idDisabled}
         error={!!errors?.email}
@@ -101,8 +104,10 @@ const CommentForm: React.FC<FormProps> = ({
       <TextField
         inputRef={nameRef}
         onKeyDown={async (e) => {
-          if (e.key === "Enter" && (await trigger("name")))
-            textRef?.current?.focus();
+          if (e.key === "Enter" && (await trigger("name"))) {
+            e.preventDefault();
+            setFocus("body");
+          }
         }}
         disabled={idDisabled}
         error={!!errors?.name}
@@ -119,6 +124,9 @@ const CommentForm: React.FC<FormProps> = ({
       />
       <TextField
         inputRef={textRef}
+        onKeyDown={async (e) => {
+          await trigger("body");
+        }}
         disabled={idDisabled}
         error={!!errors?.body}
         helperText={errors.body?.message}
