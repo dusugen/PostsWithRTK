@@ -2,10 +2,7 @@ import { Button, Container, Typography } from "@mui/material";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
-import {
-  fetchComments,
-  selectEditedComment,
-} from "../../../../../../redux/slices/commentSlice";
+import { fetchComments } from "../../../../../../redux/slices/commentSlice";
 import {
   fetchPostById,
   selectPostById,
@@ -14,6 +11,7 @@ import { useThunkDispatch } from "../../../../../../redux/store";
 import { StatusOfRequestEnum } from "../../../../../../types/enums/statusOfRequestEnum";
 import CommentsList from "./components/Comments/ComentsList";
 import Post from "./components/Post/Post";
+import Loader from "../../../../../../shared/loader/Loader";
 
 const PostPage = () => {
   const { id } = useParams();
@@ -22,12 +20,10 @@ const PostPage = () => {
   useEffect(() => {
     if (id) {
       dispatch(fetchPostById(Number(id)));
-      dispatch(fetchComments(Number(id)));
     }
   }, [dispatch, id]);
 
   const { post, status, error } = useSelector(selectPostById);
-  const editedComment = useSelector(selectEditedComment);
 
   return (
     <Container maxWidth="md" sx={{ paddingBottom: "100px" }}>
@@ -43,9 +39,14 @@ const PostPage = () => {
           <Button variant="outlined">back</Button>
         </Link>
       </Typography>
-      {status === StatusOfRequestEnum.SUCCESS && post && <Post post={post} />}
-
-      <CommentsList post={post} />
+      {status === StatusOfRequestEnum.LOADING && <Loader />}
+      {status === StatusOfRequestEnum.ERROR && error}
+      {status === StatusOfRequestEnum.SUCCESS && post && (
+        <>
+          <Post post={post} />
+          <CommentsList post={post} id={Number(id)} />
+        </>
+      )}
     </Container>
   );
 };

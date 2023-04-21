@@ -1,11 +1,16 @@
-import { Box, Button, TextField, Typography } from "@mui/material";
+import SendIcon from "@mui/icons-material/Send";
+import { LoadingButton } from "@mui/lab";
+import { Box, TextField, Typography } from "@mui/material";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { addComment } from "../../../../../../../../../../redux/slices/commentSlice";
 import { useThunkDispatch } from "../../../../../../../../../../redux/store";
-import { useEffect } from "react";
+import { StatusOfRequestEnum } from "../../../../../../../../../../types/enums/statusOfRequestEnum";
 
 interface FormProps {
   id: number | undefined;
+  idDisabled: boolean;
+  status: StatusOfRequestEnum;
+  error: string | null;
 }
 
 interface Form {
@@ -14,13 +19,18 @@ interface Form {
   body: string;
 }
 
-const CommentForm: React.FC<FormProps> = ({ id }) => {
+const CommentForm: React.FC<FormProps> = ({
+  id,
+  idDisabled,
+  status,
+  error,
+}) => {
   const dispatch = useThunkDispatch();
 
   const {
     register,
     reset,
-    formState: { errors, isSubmitSuccessful },
+    formState: { errors },
     handleSubmit,
   } = useForm<Form>({
     mode: "onBlur",
@@ -29,12 +39,6 @@ const CommentForm: React.FC<FormProps> = ({ id }) => {
   const onFormSubmit: SubmitHandler<Form> = (data) => {
     if (id) dispatch(addComment({ comment: data, postId: id }));
   };
-
-  useEffect(() => {
-    if (isSubmitSuccessful) {
-      reset();
-    }
-  }, [reset, isSubmitSuccessful]);
 
   return (
     <Box
@@ -51,6 +55,7 @@ const CommentForm: React.FC<FormProps> = ({ id }) => {
         Add your comment
       </Typography>
       <TextField
+        disabled={idDisabled}
         error={!!errors?.email}
         helperText={errors.email?.message}
         label="Email"
@@ -65,6 +70,7 @@ const CommentForm: React.FC<FormProps> = ({ id }) => {
         })}
       />
       <TextField
+        disabled={idDisabled}
         error={!!errors?.name}
         helperText={errors.name?.message}
         label="Name"
@@ -78,6 +84,7 @@ const CommentForm: React.FC<FormProps> = ({ id }) => {
         })}
       />
       <TextField
+        disabled={idDisabled}
         error={!!errors?.body}
         helperText={errors.body?.message}
         id="textarea"
@@ -94,15 +101,17 @@ const CommentForm: React.FC<FormProps> = ({ id }) => {
           },
         })}
       />
-      <Button
+      <LoadingButton
         type="submit"
-        variant="contained"
         size="large"
-        color="success"
-        sx={{ alignSelf: "flex-end" }}
+        loadingPosition="end"
+        endIcon={<SendIcon />}
+        variant="contained"
+        loading={status === StatusOfRequestEnum.LOADING}
+        sx={{ mr: "40px" }}
       >
-        Add comment
-      </Button>
+        <span>Send</span>
+      </LoadingButton>
     </Box>
   );
 };

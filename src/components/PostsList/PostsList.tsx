@@ -1,10 +1,16 @@
 import { Box, Container } from "@mui/material";
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { fetchPosts, selectFilteredPosts } from "../../redux/slices/postSlice";
+import {
+  fetchPosts,
+  selectFilteredPosts,
+  selectPosts,
+} from "../../redux/slices/postSlice";
 import { useThunkDispatch } from "../../redux/store";
 import Filter from "./Filter/Filter";
 import PostsItem from "./components/PostsItem/PostsItem";
+import Loader from "../../shared/loader/Loader";
+import { StatusOfRequestEnum } from "../../types/enums/statusOfRequestEnum";
 
 const PostsList: React.FC = () => {
   const dispatch = useThunkDispatch();
@@ -14,6 +20,8 @@ const PostsList: React.FC = () => {
   }, []);
 
   const filtredPost = useSelector(selectFilteredPosts);
+
+  const {status,error,post} = useSelector(selectPosts);
 
   return (
     <Container>
@@ -26,7 +34,11 @@ const PostsList: React.FC = () => {
           alignItems: "revent",
         }}
       >
-        {filtredPost &&
+        {status === StatusOfRequestEnum.LOADING ? (
+          <Loader />
+        ) : status === StatusOfRequestEnum.ERROR ? (
+          error
+        ) : status === StatusOfRequestEnum.SUCCESS && filtredPost ? (
           filtredPost.map((item) => {
             return (
               <PostsItem
@@ -36,7 +48,8 @@ const PostsList: React.FC = () => {
                 body={item.body}
               />
             );
-          })}
+          })
+        ) : null}
       </Box>
     </Container>
   );

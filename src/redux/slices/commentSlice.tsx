@@ -38,18 +38,29 @@ const initialState: CommentSlice = {
 export const fetchComments = createAsyncThunk<
   Comment[],
   number,
-  { rejectValue: string }
->("comment/fetchComment", async function (id, { rejectWithValue }) {
-  try {
-    const { data } = await axios.get(
-      `https://jsonplaceholder.typicode.com/posts/${id}/comments`
-    );
-    return data;
-  } catch (error) {
-    if (isAxiosError(error)) return rejectWithValue(error.message);
-    return rejectWithValue("Unknown erorr !");
+  { rejectValue: string; state: RootState }
+>(
+  "comment/fetchComment",
+  async function (id, { rejectWithValue, signal }) {
+    try {
+      const response = await axios.get(
+        `https://jsonplaceholder.typicode.com/posts/${id}/comments`,
+        {
+          signal,
+        }
+      );
+      console.log(response);
+      return response.data;
+    } catch (error) {
+      if (isAxiosError(error)) return rejectWithValue(error.message);
+      return rejectWithValue("Unknown erorr !");
+    }
+  },
+  {
+    condition: (_, { getState }) =>
+      getState().comment.fetchComments.status !== StatusOfRequestEnum.LOADING,
   }
-});
+);
 
 export const addComment = createAsyncThunk<
   Comment,
@@ -124,10 +135,10 @@ const selfSelector = (state: RootState) => state.comment;
 
 export const selectComments = createSelector(
   selfSelector,
-  (state) => state.fetchComments.data
+  (state) => state.fetchComments
 );
 
-export const selectPostData = createSelector(
+export const selectPostComment = createSelector(
   selfSelector,
   (state) => state.postComment
 );

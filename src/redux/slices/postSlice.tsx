@@ -11,7 +11,7 @@ import { RootState } from "../store";
 interface PostSlice {
   filterValue: string;
   fetchPosts: {
-    post: PostData[] | null;
+    post: PostData[];
     status: StatusOfRequestEnum;
     error: string | null;
   };
@@ -26,7 +26,7 @@ interface PostSlice {
 const initialState: PostSlice = {
   filterValue: "",
   fetchPosts: {
-    post: null,
+    post: [],
     status: StatusOfRequestEnum.IDLE,
     error: null,
   },
@@ -108,6 +108,11 @@ const postSlice = createSlice({
 });
 
 const selfSelector = (state: RootState) => state.post;
+
+export const selectPosts = createSelector(
+  selfSelector,
+  (state) => state.fetchPosts
+);
 
 export const selectFilteredPosts = createSelector(selfSelector, (state) => {
   if (state.fetchPosts.post) {
