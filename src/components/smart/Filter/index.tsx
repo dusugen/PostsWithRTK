@@ -8,13 +8,13 @@ import {
 import { useThunkDispatch } from "../../../core/store/store";
 import { PageHeader } from "../../ui/PageHeader";
 
-const Filter = () => {
+const Filter = React.memo(() => {
   const dispatch = useThunkDispatch();
   const filtredValue = useSelector(selectFiltredValue);
 
   const onFilterChange = useCallback(
-    (value: string) => {
-      dispatch(changeFilterValue(value));
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      dispatch(changeFilterValue(e.target.value));
     },
     [dispatch]
   );
@@ -30,12 +30,10 @@ const Filter = () => {
         variant="outlined"
         value={filtredValue}
         label="Search"
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-          onFilterChange(e.target.value)
-        }
+        onChange={onFilterChange}
       ></TextField>
     </Box>
   );
-};
+});
 
 export default Filter;

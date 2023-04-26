@@ -1,13 +1,8 @@
-import {
-  AppBar,
-  Box,
-  Container,
-  Toolbar,
-  Typography
-} from "@mui/material";
-import ThemeButton from "../../ui/themeButton";
+import { AppBar, Box, Container, Toolbar, Typography } from "@mui/material";
+import ThemeButton from "../../ui/ThemeButton";
+import React from "react";
 
-const Header = () => {
+const Header = React.memo(() => {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -22,6 +17,6 @@ const Header = () => {
       </AppBar>
     </Box>
   );
-};
+});
 
 export default Header;

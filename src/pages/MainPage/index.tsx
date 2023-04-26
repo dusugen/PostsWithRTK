@@ -14,7 +14,7 @@ import { useThunkDispatch } from "../../core/store/store";
 import { StatusOfRequestEnum } from "../../core/types/enums/statusOfRequestEnum";
 import { CustomizeMainPageList } from "./styled";
 
-const MainPage: React.FC = () => {
+const MainPage: React.FC = React.memo(() => {
   const dispatch = useThunkDispatch();
 
   useEffect(() => {
@@ -48,6 +48,6 @@ const MainPage: React.FC = () => {
       </Box>
     </Container>
   );
-};
+});
 
 export default MainPage;

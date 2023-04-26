@@ -1,9 +1,9 @@
 import { FormControlLabel, FormGroup, useTheme } from "@mui/material";
-import { useContext } from "react";
+import React, { useContext } from "react";
 import { ThemeContext } from "../../../core/providers/customThemeProvider";
-import { MaterialUISwitch } from "./styled";
+import { ThemeSwitch } from "./styled";
 
-const ThemeButton = () => {
+const ThemeButton = React.memo(() => {
   const theme = useTheme();
 
   const changeMode = useContext(ThemeContext);
@@ -11,13 +11,12 @@ const ThemeButton = () => {
   return (
     <FormGroup>
       <FormControlLabel
-        control={<MaterialUISwitch />}
+        control={<ThemeSwitch />}
         label={theme.palette.mode === "dark" ? "" : ""}
         checked={theme.palette.mode === "dark"}
         onClick={() => changeMode.toggleColorMode()}
       />
     </FormGroup>
   );
-};
-
+});
 export default ThemeButton;

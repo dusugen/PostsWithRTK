@@ -1,5 +1,5 @@
 import { Box, Grow, List } from "@mui/material";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import {
   fetchComments,
@@ -21,7 +21,7 @@ interface CommentListProps {
   id: number | undefined;
 }
 
-const CommentsList: React.FC<CommentListProps> = ({ post, id }) => {
+const CommentsList: React.FC<CommentListProps> = React.memo(({ post, id }) => {
   const dispatch = useThunkDispatch();
 
   useEffect(() => {
@@ -35,7 +35,7 @@ const CommentsList: React.FC<CommentListProps> = ({ post, id }) => {
   const { status: postCommentStatus, error: postCommentError } =
     useSelector(selectPostComment);
 
-  const visible =
+  const isFormVisible =
     postCommentStatus !== StatusOfRequestEnum.SUCCESS &&
     status !== StatusOfRequestEnum.ERROR &&
     !editedComment;
@@ -50,30 +50,25 @@ const CommentsList: React.FC<CommentListProps> = ({ post, id }) => {
           data.map((item: Comment) => (
             <CommentsItem key={item.id} highlightBorder={false} item={item} />
           ))}
-        {
-          editedComment && (
-            <Grow
-              unmountOnExit
-              in={!!editedComment}
-              style={{ transformOrigin: "0 0 0" }}
-              {...(!!editedComment ? { timeout: 1500 } : {})}
-            >
-              <div>
-                <CommentsItem item={editedComment} highlightBorder={true} />
-              </div>
-            </Grow>
-          )
-          /* {editedComment && (
-          <CommentsItem highlightBorder={true} item={editedComment} />
-        )} */
-        }
+        {editedComment && (
+          <Grow
+            unmountOnExit
+            in={!!editedComment}
+            style={{ transformOrigin: "0 0 0" }}
+            {...(!!editedComment ? { timeout: 1500 } : {})}
+          >
+            <div>
+              <CommentsItem item={editedComment} highlightBorder={true} />
+            </div>
+          </Grow>
+        )}
       </List>
       <Grow
         mountOnEnter
         unmountOnExit
-        in={visible}
-        // style={{ transformOrigin: "0 0 0" }}
-        // {...(visible ? { timeout: 0 } : {})}
+        in={isFormVisible}
+        style={{ transformOrigin: "0 0 0" }}
+        {...(isFormVisible ? { timeout: 100 } : {})}
       >
         <CommentForm
           id={post?.id}
@@ -84,6 +79,6 @@ const CommentsList: React.FC<CommentListProps> = ({ post, id }) => {
       </Grow>
     </Box>
   );
-};
+});
 
 export default CommentsList;

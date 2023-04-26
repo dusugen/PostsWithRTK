@@ -1,7 +1,12 @@
 import SendIcon from "@mui/icons-material/Send";
 import { LoadingButton } from "@mui/lab";
 import { Box, Typography } from "@mui/material";
-import { forwardRef, useLayoutEffect, useRef } from "react";
+import {
+  forwardRef,
+  useCallback,
+  useLayoutEffect,
+  useRef
+} from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { addComment } from "../../../core/store/slices/commentSlice";
 import { useThunkDispatch } from "../../../core/store/store";
@@ -22,7 +27,7 @@ interface Form {
 }
 
 const CommentForm: React.FC<FormProps> = forwardRef(
-  ({ id, idDisabled, status, error }, ref) => {
+  ({ id, idDisabled, status }, ref) => {
     const dispatch = useThunkDispatch();
 
     const emailRef = useRef<HTMLInputElement>(null);
@@ -37,9 +42,12 @@ const CommentForm: React.FC<FormProps> = forwardRef(
       trigger,
     } = useForm<Form>();
 
-    const onFormSubmit: SubmitHandler<Form> = (data) => {
-      if (id) dispatch(addComment({ comment: data, postId: id }));
-    };
+    const onFormSubmit: SubmitHandler<Form> = useCallback(
+      (data) => {
+        if (id) dispatch(addComment({ comment: data, postId: id }));
+      },
+      [dispatch, id]
+    );
 
     useLayoutEffect(() => {
       if (emailRef) {
@@ -115,8 +123,8 @@ const CommentForm: React.FC<FormProps> = forwardRef(
         />
         <CustomizedInput
           inputRef={textRef}
-          onKeyDown={async (e) => {
-            await trigger("body");
+          onKeyDown={() => {
+            trigger("body");
           }}
           disabled={idDisabled}
           error={!!errors?.body}
@@ -142,7 +150,7 @@ const CommentForm: React.FC<FormProps> = forwardRef(
           loading={status === StatusOfRequestEnum.LOADING}
           onClick={handleSubmit(onFormSubmit)}
         >
-          <span>Send</span>
+          Send
         </LoadingButton>
       </Box>
     );

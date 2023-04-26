@@ -1,6 +1,7 @@
 import { CardContent, CardHeader, Typography, useTheme } from "@mui/material";
 import { Link } from "react-router-dom";
 import { CustomizePostsAvatar, CustomizedPostCard } from "./styled";
+import { memo, FC } from "react";
 
 interface PostsItemProps {
   id: number;
@@ -8,7 +9,7 @@ interface PostsItemProps {
   body: string;
 }
 
-const PostsItem: React.FC<PostsItemProps> = ({ id, title, body }) => {
+const PostsItem: FC<PostsItemProps> = memo(({ id, title, body }) => {
   const theme = useTheme();
 
   return (
@@ -31,6 +32,6 @@ const PostsItem: React.FC<PostsItemProps> = ({ id, title, body }) => {
       </CardContent>
     </CustomizedPostCard>
   );
-};
+});
 
 export default PostsItem;

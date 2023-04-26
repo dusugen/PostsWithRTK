@@ -1,5 +1,5 @@
 import { Button } from "@mui/material";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import Post from "../../components/simple/Post";
@@ -15,7 +15,7 @@ import { useThunkDispatch } from "../../core/store/store";
 import { StatusOfRequestEnum } from "../../core/types/enums/statusOfRequestEnum";
 import { PostPageWrapper } from "./styled";
 
-const PostPage = () => {
+const PostPage = React.memo(() => {
   const { id } = useParams();
 
   const dispatch = useThunkDispatch();
@@ -45,6 +45,6 @@ const PostPage = () => {
       )}
     </PostPageWrapper>
   );
-};
+});
 
 export default PostPage;
