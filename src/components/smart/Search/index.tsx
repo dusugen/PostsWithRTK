@@ -3,14 +3,14 @@ import React, { useCallback } from "react";
 import { useSelector } from "react-redux";
 import {
   changeFilterValue,
-  selectFiltredValue,
+  selectSearchedValue,
 } from "../../../core/store/slices/postSlice";
 import { useThunkDispatch } from "../../../core/store/store";
 import { PageHeader } from "../../ui/PageHeader";
 
-const Filter = React.memo(() => {
+const Search = React.memo(() => {
   const dispatch = useThunkDispatch();
-  const filtredValue = useSelector(selectFiltredValue);
+  const searchedValue = useSelector(selectSearchedValue);
 
   const onFilterChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -22,13 +22,13 @@ const Filter = React.memo(() => {
   return (
     <Box display="flex" flexDirection="column" position="relative">
       <Box display="flex" alignItems="center" justifyContent="center">
-        <PageHeader variant="h2" color="info.light">
-          Filter
+        <PageHeader variant="h2">
+          Posts
         </PageHeader>
       </Box>
       <TextField
         variant="outlined"
-        value={filtredValue}
+        value={searchedValue}
         label="Search"
         onChange={onFilterChange}
       ></TextField>
@@ -36,4 +36,4 @@ const Filter = React.memo(() => {
   );
 });
 
-export default Filter;
+export default Search;

@@ -1,9 +1,9 @@
 import { FormControlLabel, FormGroup, useTheme } from "@mui/material";
-import React, { useContext } from "react";
+import React, { memo, useContext } from "react";
 import { ThemeContext } from "../../../core/providers/customThemeProvider";
 import { ThemeSwitch } from "./styled";
 
-const ThemeButton = React.memo(() => {
+const ThemeButton = () => {
   const theme = useTheme();
 
   const changeMode = useContext(ThemeContext);
@@ -18,5 +18,5 @@ const ThemeButton = React.memo(() => {
       />
     </FormGroup>
   );
-});
-export default ThemeButton;
+};
+export default memo(ThemeButton);

@@ -1,4 +1,4 @@
-type Theme = "light" | "dark";
+export type Theme = "light" | "dark";
 
 export const getTheme = (): Theme => {
   const currentTheme = localStorage.getItem("theme");

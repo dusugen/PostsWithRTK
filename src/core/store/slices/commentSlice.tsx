@@ -44,7 +44,7 @@ export const fetchComments = createAsyncThunk<
   "comment/fetchComment",
   async function (id, { rejectWithValue, signal }) {
     try {
-      const { data } = await axios.get(`${config.apiUrl}/${id}/comments`, {
+      const { data } = await axios.get(`${config.apiUrl}/posts/${id}/comments`, {
         signal,
       });
       return data;

@@ -31,7 +31,7 @@ const PostPage = React.memo(() => {
     <PostPageWrapper maxWidth="md">
       <PageHeader display="flex" justifyContent="space-between" variant="h2">
         Post #{id}
-        <Link to="/">
+        <Link to="/posts">
           <Button variant="outlined">back</Button>
         </Link>
       </PageHeader>

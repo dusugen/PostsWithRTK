@@ -1,4 +1,4 @@
-import { Avatar, Box, ListItem, styled } from "@mui/material";
+import { Avatar, ListItem, styled } from "@mui/material";
 
 export type ItemProps = {
   highlightBorder: boolean;
@@ -14,7 +14,6 @@ export const CustomizedItem = styled(ListItem, {
   borderStyle: "solid",
   alignItems: "flex-start",
   borderRadius: "10px",
-  marginBottom: "10px",
 }));
 
 export const CustomizeCommentsAvatar = styled(Avatar)(({ theme }) => ({

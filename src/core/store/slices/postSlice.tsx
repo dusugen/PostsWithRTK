@@ -10,7 +10,7 @@ import { RootState } from "../store";
 import config from "../../config/config.json";
 
 interface PostSlice {
-  filterValue: string;
+  searchedValue: string;
   fetchPosts: {
     post: PostData[];
     status: StatusOfRequestEnum;
@@ -25,7 +25,7 @@ interface PostSlice {
 }
 
 const initialState: PostSlice = {
-  filterValue: "",
+  searchedValue: "",
   fetchPosts: {
     post: [],
     status: StatusOfRequestEnum.IDLE,
@@ -45,7 +45,7 @@ export const fetchPosts = createAsyncThunk<
   { rejectValue: string; state: RootState }
 >("post/fetchPosts", async function (_, { rejectWithValue }) {
   try {
-    const { data } = await axios.get<PostData[]>(`${config.apiUrl}?_limit=20`);
+    const { data } = await axios.get<PostData[]>(`${config.apiUrl}/posts?_limit=20`);
     return data;
   } catch (error) {
     if (isAxiosError(error)) return rejectWithValue(error.message);
@@ -59,7 +59,7 @@ export const fetchPostById = createAsyncThunk<
   { rejectValue: string; state: RootState }
 >("post/fetchPostById", async function (id, { rejectWithValue }) {
   try {
-    const { data } = await axios.get<PostData>(`${config.apiUrl}/${id}`);
+    const { data } = await axios.get<PostData>(`${config.apiUrl}/posts/${id}`);
     return data;
   } catch (error) {
     if (isAxiosError(error)) return rejectWithValue(error.message);
@@ -72,7 +72,7 @@ const postSlice = createSlice({
   initialState,
   reducers: {
     changeFilterValue(state, action) {
-      state.filterValue = action.payload;
+      state.searchedValue = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -114,14 +114,14 @@ export const selectPosts = createSelector(
 export const selectFilteredPosts = createSelector(selfSelector, (state) => {
   if (state.fetchPosts.post) {
     return state.fetchPosts.post.filter((item) =>
-      item.title.includes(state.filterValue)
+      item.title.includes(state.searchedValue)
     );
   }
 });
 
-export const selectFiltredValue = createSelector(
+export const selectSearchedValue = createSelector(
   selfSelector,
-  (state) => state.filterValue
+  (state) => state.searchedValue
 );
 
 export const selectPostById = createSelector(
