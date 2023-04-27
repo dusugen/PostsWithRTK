@@ -1,5 +1,5 @@
 import { FormControlLabel, FormGroup, useTheme } from "@mui/material";
-import React, { memo, useContext } from "react";
+import { memo, useContext } from "react";
 import { ThemeContext } from "../../../core/providers/customThemeProvider";
 import { ThemeSwitch } from "./styled";
 

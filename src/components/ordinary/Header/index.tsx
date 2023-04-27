@@ -4,7 +4,6 @@ import HeaderLogo from "../../ui/HeaderLogo";
 import ThemeButton from "../../ui/ThemeButton";
 
 const Header: FC = () => {
-  console.log("rerender Header");
   return (
     <Box sx={{ flexGrow: 1 }} position="sticky" top="0">
       <AppBar position="static">

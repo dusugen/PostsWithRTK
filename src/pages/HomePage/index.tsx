@@ -13,7 +13,6 @@ import albumLogo from "../../assets/img/hiclipart.com.png";
 const HomePage: FC = () => {
   const theme = useTheme();
   const { pathname } = useLocation();
-  console.log(pathname, "params");
   return (
     <Container>
       <Grow in={pathname === "/"}>
