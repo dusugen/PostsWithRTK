@@ -1,7 +1,7 @@
 import { AppBar, Box, Container, Toolbar, Typography } from "@mui/material";
 import { FC, memo } from "react";
 import HeaderLogo from "../../ui/HeaderLogo";
-// import ThemeButton from "../../ui/ThemeButton";
+import ThemeButton from "../../ui/ThemeButton";
 
 const Header: FC = () => {
   return (
@@ -18,7 +18,7 @@ const Header: FC = () => {
             >
               Posts App
             </Typography>
-            {/* <ThemeButton /> */}
+            <ThemeButton />
           </Toolbar>
         </Container>
       </AppBar>
