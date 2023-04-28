@@ -3,7 +3,7 @@ import { FC, memo, useContext } from "react";
 import { ThemeContext } from "../../../core/providers/customThemeProvider";
 import { ThemeSwitch } from "./styled";
 
-const ThemeButton:FC = () => {
+const ThemeButton: FC = () => {
   const theme = useTheme();
 
   const changeMode = useContext(ThemeContext);
