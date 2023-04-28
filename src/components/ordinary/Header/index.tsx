@@ -1,7 +1,7 @@
 import { AppBar, Box, Container, Toolbar, Typography } from "@mui/material";
 import { FC, memo } from "react";
 import HeaderLogo from "../../ui/HeaderLogo";
-import ThemeButton from "../../ui/ThemeButton";
+import ThemeButton from "../../ui/themeButton";
 
 const Header: FC = () => {
   return (
