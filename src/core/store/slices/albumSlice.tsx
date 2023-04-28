@@ -40,33 +40,51 @@ export const fetchAlbums = createAsyncThunk<
   Album[],
   void,
   { rejectValue: string; state: RootState }
->("album/fetchAlbums", async function (_, { rejectWithValue }) {
-  try {
-    const { data } = await axios.get<Album[]>(
-      `${config.apiUrl}/albums?_limit=6`
-    );
-    return data;
-  } catch (error) {
-    if (isAxiosError(error)) return rejectWithValue(error.message);
-    return rejectWithValue("Unknown erorr !");
+>(
+  "album/fetchAlbums",
+  async function (_, { rejectWithValue, signal }) {
+    try {
+      const { data } = await axios.get<Album[]>(
+        `${config.apiUrl}/albums?_limit=6`,
+        {
+          signal,
+        }
+      );
+      return data;
+    } catch (error) {
+      if (isAxiosError(error)) return rejectWithValue(error.message);
+      return rejectWithValue("Unknown erorr !");
+    }
+  },
+  {
+    condition: (_, { getState }) =>
+      getState().album.fetchAlbums.status !== StatusOfRequestEnum.LOADING,
   }
-});
+);
 
 export const fetchPhotos = createAsyncThunk<
   Photo[],
   number,
   { rejectValue: string; state: RootState }
->("photo/fetchPhoto", async function (id, { rejectWithValue }) {
-  try {
-    const { data } = await axios.get<Photo[]>(
-      `${config.apiUrl}/albums/${id}/photos?_limit=12`
-    );
-    return data;
-  } catch (error) {
-    if (isAxiosError(error)) return rejectWithValue(error.message);
-    return rejectWithValue("Unknown erorr !");
+>(
+  "photo/fetchPhoto",
+  async function (id, { rejectWithValue, signal }) {
+    try {
+      const { data } = await axios.get<Photo[]>(
+        `${config.apiUrl}/albums/${id}/photos?_limit=12`,
+        { signal }
+      );
+      return data;
+    } catch (error) {
+      if (isAxiosError(error)) return rejectWithValue(error.message);
+      return rejectWithValue("Unknown erorr !");
+    }
+  },
+  {
+    condition: (_, { getState }) =>
+      getState().album.fetchPhotos.status !== StatusOfRequestEnum.LOADING,
   }
-});
+);
 
 const albumsSlice = createSlice({
   name: "albums",

@@ -17,7 +17,8 @@ const MainPage: React.FC = () => {
   const dispatch = useThunkDispatch();
 
   useEffect(() => {
-    dispatch(fetchPosts());
+    const promise = dispatch(fetchPosts());
+    return () => promise.abort();
   }, [dispatch]);
 
   const filtredPost = useSelector(selectFilteredPosts);
@@ -43,14 +44,14 @@ const MainPage: React.FC = () => {
               filtredPost &&
               filtredPost.map((item) => {
                 return (
-                    <Grid item xs={2} sm={4} md={4} key={item.id}>
-                      <PostsItem
-                        key={item.id}
-                        id={item.id}
-                        title={item.title}
-                        body={item.body}
-                      />
-                    </Grid>
+                  <Grid item xs={2} sm={4} md={4} key={item.id}>
+                    <PostsItem
+                      key={item.id}
+                      id={item.id}
+                      title={item.title}
+                      body={item.body}
+                    />
+                  </Grid>
                 );
               })}
           </Grid>

@@ -43,15 +43,27 @@ export const fetchPosts = createAsyncThunk<
   PostData[],
   void,
   { rejectValue: string; state: RootState }
->("post/fetchPosts", async function (_, { rejectWithValue }) {
-  try {
-    const { data } = await axios.get<PostData[]>(`${config.apiUrl}/posts?_limit=20`);
-    return data;
-  } catch (error) {
-    if (isAxiosError(error)) return rejectWithValue(error.message);
-    return rejectWithValue("Unknown erorr !");
+>(
+  "post/fetchPosts",
+  async function (_, { rejectWithValue, signal }) {
+    try {
+      const { data } = await axios.get<PostData[]>(
+        `${config.apiUrl}/posts?_limit=20`,
+        {
+          signal,
+        }
+      );
+      return data;
+    } catch (error) {
+      if (isAxiosError(error)) return rejectWithValue(error.message);
+      return rejectWithValue("Unknown erorr !");
+    }
+  },
+  {
+    condition: (_, { getState }) =>
+      getState().post.fetchPosts.status !== StatusOfRequestEnum.LOADING,
   }
-});
+);
 
 export const fetchPostById = createAsyncThunk<
   PostData,

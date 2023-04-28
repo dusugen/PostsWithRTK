@@ -28,12 +28,12 @@ export const CustomThemeProvider: FC<PropsWithChildren> = ({ children }) => {
   );
 
   useEffect(() => {
-    setMode(currentTheme);
+    setMode(getTheme());
   }, []); // 1st render take from LS
 
   useEffect(() => {
     localStorage.setItem("theme", mode);
-  }, [mode]); // set to LSч
+  }, [mode]); // set to LS
 
   return (
     <ThemeContext.Provider value={colorMode}>

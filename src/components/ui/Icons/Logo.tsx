@@ -33,7 +33,6 @@ const Logo = (props: SvgIconProps) => (
       style={{
         opacity: 0.15,
         fill: "#333",
-        // enableBackground: "new",
       }}
     />
     <path

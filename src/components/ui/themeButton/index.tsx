@@ -1,9 +1,9 @@
 import { FormControlLabel, FormGroup, useTheme } from "@mui/material";
-import { memo, useContext } from "react";
+import { FC, memo, useContext } from "react";
 import { ThemeContext } from "../../../core/providers/customThemeProvider";
 import { ThemeSwitch } from "./styled";
 
-const ThemeButton = () => {
+const ThemeButton:FC = () => {
   const theme = useTheme();
 
   const changeMode = useContext(ThemeContext);

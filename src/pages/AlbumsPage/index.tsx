@@ -14,7 +14,8 @@ const AlbumsPage: FC = () => {
   const dispatch = useThunkDispatch();
 
   useEffect(() => {
-    dispatch(fetchAlbums());
+    const promise = dispatch(fetchAlbums());
+    return () => promise.abort();
   }, [dispatch]);
 
   const { data, status, error } = useSelector(selectAlbums);

@@ -15,7 +15,10 @@ const PhotosPage = () => {
   const { id } = useParams();
 
   useEffect(() => {
-    if (id) dispatch(fetchPhotos(Number(id)));
+    if (id) {
+      const promise = dispatch(fetchPhotos(Number(id)));
+      return () => promise.abort();
+    }
   }, [dispatch, id]);
 
   const { data, status, error } = useSelector(selectPhotos);
