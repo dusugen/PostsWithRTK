@@ -61,7 +61,6 @@ const HomePage: FC = () => {
             <img src={postsLofo} alt="logo" style={{ maxWidth: "600px" }} />
           </Box>
 
-
           <Box display="flex" justifyContent="start" height="600px">
             <Box
               display="flex"
@@ -84,7 +83,7 @@ const HomePage: FC = () => {
                 check out our latest photos and relive our favorite memories.
               </Typography>
               <Link
-                to="/posts"
+                to="/albums"
                 style={{ alignSelf: "start", marginTop: "auto" }}
               >
                 <Button variant="contained" size="large">
